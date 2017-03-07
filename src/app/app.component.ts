@@ -1,18 +1,15 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
-
-import { TabsPage } from '../pages/tabs/tabs';
-import {Login} from "../pages/login/login";
+import { Maps } from "../pages/maps/maps.component";
 
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage = Login;
+  rootPage = Maps;
 
-  constructor(platform: Platform) {
-
+  constructor(private platform: Platform) {
+    this.platform = platform;
   }
 }
