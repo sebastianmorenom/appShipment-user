@@ -89,6 +89,8 @@ export class Maps {
 
   printDirections(){
     if (this.directionsStatus === "OK"){
+      this.markerOrigen.setMap(null);
+      this.markerDestino.setMap(null);
       this.directionsRender.setMap(this.map);
       this.directionsRender.setDirections(this.directionsResult);
     }
