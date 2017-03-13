@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { Maps } from "../pages/maps/maps.component";
+import { Accelerometer } from "../pages/accelerometer/accelerometer.component";
 
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage = Maps;
+  rootPage = Accelerometer;
 
   constructor(private platform: Platform) {
     this.platform = platform;

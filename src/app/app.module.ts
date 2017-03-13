@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import {Login} from "../pages/login/login";
 import { Maps } from "../pages/maps/maps.component";
+import { Accelerometer } from "../pages/accelerometer/accelerometer.component";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { Maps } from "../pages/maps/maps.component";
     HomePage,
     TabsPage,
     Login,
-    Maps
+    Maps,
+    Accelerometer
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -29,7 +31,8 @@ import { Maps } from "../pages/maps/maps.component";
     HomePage,
     TabsPage,
     Login,
-    Maps
+    Maps,
+    Accelerometer
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
