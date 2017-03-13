@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef} from "@angular/core";
+import {Component, OnInit, ViewChild, ElementRef} from "@angular/core";
 import { NavController } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 
@@ -7,7 +7,7 @@ declare var google;
 @Component({
   templateUrl: 'maps.html',
 })
-export class Maps {
+export class Maps implements OnInit{
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
@@ -23,8 +23,8 @@ export class Maps {
     this.enableDirections=true;
   }
 
-  ionViewLoaded(){
-
+  ngOnInit(){
+    this.loadMap();
   }
 
   loadMap(){
