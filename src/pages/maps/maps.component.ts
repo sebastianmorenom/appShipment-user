@@ -18,11 +18,21 @@ export class Maps implements OnInit{
   directionsResult: any;
   directionsStatus: any;
   enableDirections: boolean;
+  iconUserDetail:any;
+  iconTransDetail:any;
+
+  info:any;
 
   constructor(public navCtrl: NavController) {
     this.enableDirections=true;
     this.markerOrigen = null;
     this.markerDestino = null;
+    this.iconUserDetail = {
+      url: '../assets/icon/userPos.png'
+    };
+    this.iconTransDetail = {
+      url: '../assets/icon/carPos.png'
+    };
   }
 
   ngOnInit(){
@@ -44,9 +54,9 @@ export class Maps implements OnInit{
         };
 
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-        this.addMarkerWithPos(1, centerMap);
+        this.addMarkerCenterMap(1);
         this.map.addListener('click', (event)=>{
-          console.log(event);
+          this.addMarkerWithPos(1, event.latLng);
         });
 
       },
@@ -61,22 +71,13 @@ export class Maps implements OnInit{
       if(this.markerOrigen){
         this.markerOrigen.setMap(null);
       }
-      this.markerOrigen = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: this.map.getCenter(),
-        icon: './'
-      });
+      this.markerOrigen = this.putMarker(this.map, this.markerOrigen, this.map.getCenter(), this.iconUserDetail);
     }
     if( opt === 2 ){
       if(this.markerDestino){
         this.markerDestino.setMap(null);
       }
-      this.markerDestino = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: this.map.getCenter()
-      });
+      this.markerDestino = this.putMarker(this.map, this.markerDestino, this.map.getCenter(), this.iconTransDetail);
     }
   }
 
@@ -86,23 +87,29 @@ export class Maps implements OnInit{
       if(this.markerOrigen){
         this.markerOrigen.setMap(null);
       }
-      this.markerOrigen = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: pos
-      });
+      this.markerOrigen = this.putMarker(this.map, this.markerOrigen, pos, this.iconUserDetail);
     }
     if( opt === 2 ){
       if(this.markerDestino){
         this.markerDestino.setMap(null);
       }
-      this.markerDestino = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: pos
-      });
+      this.markerDestino = this.putMarker(this.map, this.markerDestino, pos, this.iconTransDetail);
     }
   };
+
+  putMarker(map, marker, pos, iconDetail){
+    this.directionsRender.set('directions', null);
+    marker = new google.maps.Marker({
+      map: map,
+      animation: google.maps.Animation.DROP,
+      position: pos,
+      icon: iconDetail
+    });
+    marker.addListener('click', ()=>{
+      console.log(marker);
+    });
+    return marker;
+  }
 
   getDirections(){
     console.log("getting directions!");
