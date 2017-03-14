@@ -12,21 +12,68 @@ export class Maps implements OnInit{
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   markerOrigen: any;
-  markerDestino: any;
+  public markerDestino: any;
+  markersTrans: any;
   directionsService: any;
   directionsRender: any;
   directionsResult: any;
   directionsStatus: any;
-  enableDirections: boolean;
+  public markerSelected: boolean;
   iconUserDetail:any;
   iconTransDetail:any;
+  data:any;
 
   info:any;
 
   constructor(public navCtrl: NavController) {
-    this.enableDirections=true;
+    this.data = [
+      {
+        image: '../assets/icon/car.png',
+        name: "Jax Handmaster",
+        carDetail: {
+          type:'Carro',
+          model:'BMW M3',
+          modelYear:2013,
+          id:'ABC 123'
+        },
+        pos:{
+          lat: 4.7412865,
+          lng: -74.0646321
+        }
+      },
+      {
+        image: '../assets/icon/car.png',
+        name: "Diana Moonlight",
+        carDetail: {
+          type:'Carro',
+          model:'Ford Mustang',
+          modelYear:2013,
+          id:'QWE 456'
+        },
+        pos:{
+          lat: 4.7495729,
+          lng: -74.040520
+        }
+      },
+      {
+        image: '../assets/icon/car.png',
+        name: "Fizz Seajoker",
+        carDetail: {
+          type:'Moto',
+          model:'Yamaha R1M',
+          modelYear:2013,
+          id:'ENO 70D'
+        },
+        pos:{
+          lat: 4.7597633,
+          lng: -74.063867
+        }
+      },
+    ];
+    this.markerSelected=false;
+    this.markersTrans = [];
     this.markerOrigen = null;
-    this.markerDestino = null;
+    this.markerDestino = {data:{carDetail:{}}};
     this.iconUserDetail = {
       url: '../assets/icon/userPos.png'
     };
@@ -58,7 +105,7 @@ export class Maps implements OnInit{
         this.map.addListener('click', (event)=>{
           this.addMarkerWithPos(1, event.latLng);
         });
-
+        this.loadTransMasrkers();
       },
       (err) => {
         console.log(err);
@@ -97,18 +144,33 @@ export class Maps implements OnInit{
     }
   };
 
-  putMarker(map, marker, pos, iconDetail){
+  putMarker(map, marker, pos, iconDetail, data?){
     this.directionsRender.set('directions', null);
     marker = new google.maps.Marker({
       map: map,
       animation: google.maps.Animation.DROP,
       position: pos,
-      icon: iconDetail
+      icon: iconDetail,
+      data: data
     });
     marker.addListener('click', ()=>{
-      console.log(marker);
+      this.updateDestinoInfo(marker);
     });
     return marker;
+  }
+
+  loadTransMasrkers(){
+    for(var i=0; i<this.data.length; i++){
+      let pos = new google.maps.LatLng(this.data[i].pos.lat, this.data[i].pos.lng);
+      this.markersTrans.push(new google.maps.Marker());
+      this.markersTrans[i] = this.putMarker(this.map, this.markersTrans[i], pos, this.iconTransDetail, this.data[i]);
+    }
+  }
+
+  updateDestinoInfo(marker){
+    this.markerSelected = true;
+    this.markerDestino = marker;
+    console.log(this.markerDestino.data)
   }
 
   getDirections(){

@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header xmlns="http://www.w3.org/1999/html">
   <ion-navbar>
     <ion-title>
       Map
@@ -14,14 +14,21 @@
   <div id="panel" style="width: 300px; float: right;"></div>
   <ion-grid>
     <ion-row>
-      <ion-col offset-lg-2 >
-        <button ion-button (click)="addMarkerCenterMap(1)"><ion-icon name="locate"></ion-icon>&nbsp;Origen</button>
+      <ion-col offset-2="">
+        <div *ngIf="markerSelected">
+          <img [src]="markerDestino.data.image" alt="">
+        </div>
       </ion-col>
       <ion-col>
-        <button ion-button (click)="addMarkerCenterMap(2)"><ion-icon name="locate"></ion-icon>&nbsp;Destino</button>
+        <div *ngIf="markerSelected">
+          <p>{{markerDestino.data.name}}</p>
+          <p>{{markerDestino.data.carDetail.type}}</p>
+          <p>{{markerDestino.data.carDetail.model}}-{{markerDestino.data.carDetail.id}}</p>
+          <p>{{markerDestino.data.carDetail.modelYear}}</p>
+        </div>
       </ion-col>
       <ion-col>
-        <button ion-button (click)="getDirections()" [disabled]="!enableDirections"><ion-icon name="car"></ion-icon>&nbsp;Direcciones</button>
+        <button ion-button (click)="getDirections()" ><ion-icon name="car"></ion-icon>&nbsp;Direcciones</button>
       </ion-col>
     </ion-row>
   </ion-grid>
