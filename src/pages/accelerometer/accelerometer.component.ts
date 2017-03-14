@@ -1,35 +1,38 @@
-import {Component} from "@angular/core";
-import {DeviceMotion} from 'ionic-native';
+import {Component, ViewChild} from "@angular/core";
+import { NavController } from 'ionic-angular';
+import { DeviceMotion, DeviceMotionAccelerationData } from 'ionic-native';
 @Component({
   templateUrl: 'accelerometer.html',
 })
 export class Accelerometer{
-	x:string;
-	y:string;
-	z:string;
+	accelerometer: any;
+	axisX:any;
+	axisY:any;
+	axisZ:any;
 
-	constructor(){
-		this.x = "prueba";
+	constructor(public navCtrl: NavController){
+		this.axisX = 0;
+		this.axisY = 0;
+		this.axisZ = 0;
 	}
-		getAcceleration(){
-			navigator.accelerometer.getCurrentAcceleration(this.onSuccess, this.onError);	
-		}	
+	getAcceleration(){		
+			DeviceMotion.getCurrentAcceleration().then(
+				(acceleration: DeviceMotionAccelerationData) => console.log(acceleration),
+				(error: any) => console.log(error)
+			);
 
-	onSuccess(acceleration){
-	    		console.log('Acceleration X: ' + acceleration.x + '\n' +
-	          	'Acceleration Y: ' + acceleration.y + '\n' +
-	          	'Acceleration Z: ' + acceleration.z + '\n' +
-	          	'Timestamp: '      + acceleration.timestamp + '\n');
-	          	console.log(this+"el");
-	    		this.x = acceleration.x;
-	    		this.y = acceleration.y;
-	    		this.z = acceleration.z;
-	}
-	onError() {
-    		alert('onError!');
+			var subscription = DeviceMotion.watchAcceleration().subscribe((acceleration: DeviceMotionAccelerationData) => {
+  				this.axisX = acceleration.x;
+  				this.axisY = acceleration.y;
+  				this.axisZ = acceleration.z;
+			});
+
+			// Stop watch
+			subscription.unsubscribe();
 	}
 
 }
+
 
 
 
