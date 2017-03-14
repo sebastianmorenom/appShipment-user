@@ -11,16 +11,18 @@ export class Maps implements OnInit{
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;
-  markerOrigen:any;
-  markerDestino:any;
-  directionsService:any;
-  directionsRender:any;
-  directionsResult:any;
-  directionsStatus:any;
-  enableDirections:boolean;
+  markerOrigen: any;
+  markerDestino: any;
+  directionsService: any;
+  directionsRender: any;
+  directionsResult: any;
+  directionsStatus: any;
+  enableDirections: boolean;
 
   constructor(public navCtrl: NavController) {
     this.enableDirections=true;
+    this.markerOrigen = null;
+    this.markerDestino = null;
   }
 
   ngOnInit(){
@@ -39,9 +41,14 @@ export class Maps implements OnInit{
           center: centerMap,
           zoom: 15,
           mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
+        };
 
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+        this.addMarkerWithPos(1, centerMap);
+        this.map.addListener('click', (event)=>{
+          console.log(event);
+        });
+
       },
       (err) => {
         console.log(err);
@@ -49,7 +56,31 @@ export class Maps implements OnInit{
     );
   };
 
-  addMarker(opt){
+  addMarkerCenterMap(opt){
+    if( opt === 1 ){
+      if(this.markerOrigen){
+        this.markerOrigen.setMap(null);
+      }
+      this.markerOrigen = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: this.map.getCenter(),
+        icon: './'
+      });
+    }
+    if( opt === 2 ){
+      if(this.markerDestino){
+        this.markerDestino.setMap(null);
+      }
+      this.markerDestino = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: this.map.getCenter()
+      });
+    }
+  }
+
+  addMarkerWithPos(opt, pos){
 
     if( opt === 1 ){
       if(this.markerOrigen){
@@ -58,17 +89,17 @@ export class Maps implements OnInit{
       this.markerOrigen = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
-        position: this.map.getCenter()
+        position: pos
       });
     }
-    if( opt=== 2 ){
+    if( opt === 2 ){
       if(this.markerDestino){
         this.markerDestino.setMap(null);
       }
       this.markerDestino = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
-        position: this.map.getCenter()
+        position: pos
       });
     }
   };

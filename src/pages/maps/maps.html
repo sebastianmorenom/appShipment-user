@@ -15,10 +15,10 @@
   <ion-grid>
     <ion-row>
       <ion-col offset-lg-2 >
-        <button ion-button (click)="addMarker(1)"><ion-icon name="locate"></ion-icon>&nbsp;Origen</button>
+        <button ion-button (click)="addMarkerCenterMap(1)"><ion-icon name="locate"></ion-icon>&nbsp;Origen</button>
       </ion-col>
       <ion-col>
-        <button ion-button (click)="addMarker(2)"><ion-icon name="locate"></ion-icon>&nbsp;Destino</button>
+        <button ion-button (click)="addMarkerCenterMap(2)"><ion-icon name="locate"></ion-icon>&nbsp;Destino</button>
       </ion-col>
       <ion-col>
         <button ion-button (click)="getDirections()" [disabled]="!enableDirections"><ion-icon name="car"></ion-icon>&nbsp;Direcciones</button>
