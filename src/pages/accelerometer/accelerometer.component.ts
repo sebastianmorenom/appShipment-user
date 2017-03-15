@@ -17,18 +17,17 @@ export class Accelerometer{
 	}
 	getAcceleration(){		
 			DeviceMotion.getCurrentAcceleration().then(
-				(acceleration: DeviceMotionAccelerationData) => console.log(acceleration),
-				(error: any) => console.log(error)
+			  (acceleration: DeviceMotionAccelerationData) => console.log(acceleration),
+			  (error: any) => console.log(error)
 			);
 
-			var subscription = DeviceMotion.watchAcceleration().subscribe((acceleration: DeviceMotionAccelerationData) => {
-  				this.axisX = acceleration.x;
-  				this.axisY = acceleration.y;
-  				this.axisZ = acceleration.z;
+			// Watch device acceleration
+			var options = { frequency: 1000 };  // Update every 3 seconds
+			var subscription = DeviceMotion.watchAcceleration(options).subscribe((acceleration: DeviceMotionAccelerationData) => {
+			  console.log(acceleration);
 			});
 
-			// Stop watch
-			subscription.unsubscribe();
+			
 	}
 
 }
