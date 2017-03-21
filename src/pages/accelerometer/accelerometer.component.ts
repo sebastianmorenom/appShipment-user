@@ -25,6 +25,10 @@ export class Accelerometer{
 			var options = { frequency: 1000 };  // Update every 3 seconds
 			var subscription = DeviceMotion.watchAcceleration(options).subscribe((acceleration: DeviceMotionAccelerationData) => {
 			  console.log(acceleration);
+			  this.axisX = acceleration.x;
+			  this.axisY = acceleration.y;
+			  this.axisZ = acceleration.z;
+			  console.log(this.axisX +', '+this.axisY+', '+ this.axisZ);
 			});
 
 			
