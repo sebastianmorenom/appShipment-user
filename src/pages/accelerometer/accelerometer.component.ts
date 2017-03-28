@@ -11,6 +11,7 @@ export class Accelerometer{
 	axisZ:any;
 
 	constructor(public navCtrl: NavController){
+		// Ejes del sensor
 		this.axisX = 0;
 		this.axisY = 0;
 		this.axisZ = 0;
