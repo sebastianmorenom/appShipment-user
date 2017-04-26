@@ -5,7 +5,7 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
-import {Login} from "../pages/login/login";
+import { Login } from "../pages/login/login";
 import { Maps } from "../pages/maps/maps.component";
 
 @NgModule({
