@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild, ElementRef} from "@angular/core";
 import { NavController } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
+import {AppShipmentService} from "../../app/services/appShipment.service";
 
 declare var google;
 
@@ -25,51 +26,7 @@ export class Home implements OnInit{
 
   info:any;
 
-  constructor(public navCtrl: NavController) {
-    this.data = [
-      {
-        image: '../assets/icon/car.png',
-        name: "Jax Handmaster",
-        carDetail: {
-          type:'Carro',
-          model:'BMW M3',
-          modelYear:2013,
-          id:'ABC 123'
-        },
-        pos:{
-          lat: 4.7412865,
-          lng: -74.0646321
-        }
-      },
-      {
-        image: '../assets/icon/car.png',
-        name: "Diana Moonlight",
-        carDetail: {
-          type:'Carro',
-          model:'Ford Mustang',
-          modelYear:2013,
-          id:'QWE 456'
-        },
-        pos:{
-          lat: 4.7495729,
-          lng: -74.040520
-        }
-      },
-      {
-        image: '../assets/icon/car.png',
-        name: "Fizz Seajoker",
-        carDetail: {
-          type:'Moto',
-          model:'Yamaha R1M',
-          modelYear:2013,
-          id:'ENO 70D'
-        },
-        pos:{
-          lat: 4.7597633,
-          lng: -74.063867
-        }
-      },
-    ];
+  constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService) {
     this.markerSelected=false;
     this.markersTrans = [];
     this.markerOrigen = null;
@@ -84,6 +41,7 @@ export class Home implements OnInit{
 
   ngOnInit(){
     this.loadMap();
+
   }
 
   loadMap(){
@@ -92,8 +50,16 @@ export class Home implements OnInit{
     this.directionsRender = new google.maps.DirectionsRenderer();
     Geolocation.getCurrentPosition().then(
       (position) => {
-        let centerMap = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
+        //let centerMap = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        let centerMap = new google.maps.LatLng(4.670191, -74.058528);
+        //this.appShipmentService.getTransporters({estado:"S", position.coords.latitude, lng:  position.coords.longitude}).subscribe(
+        this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
+          (data:any) => {
+            this.data = data;
+            console.log(this.data);
+            this.loadTransMasrkers();
+          }
+        );
         let mapOptions = {
           center: centerMap,
           zoom: 15,
@@ -105,7 +71,6 @@ export class Home implements OnInit{
         this.map.addListener('click', (event)=>{
           this.addMarkerWithPos(1, event.latLng);
         });
-        this.loadTransMasrkers();
       },
       (err) => {
         console.log(err);

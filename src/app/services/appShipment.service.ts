@@ -20,4 +20,15 @@ export class AppShipmentService {
     );
   }
 
+  getTransporters(data){
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions ({ headers: headers });
+    return this.http.post(this.url+"/transportadores/location", data, options).map(
+      (response:Response) => {
+        const data = response.json();
+        return data;
+      }
+    );
+  }
+
 }

@@ -16,19 +16,19 @@
     <ion-row>
       <ion-col offset-2="">
         <div *ngIf="markerSelected">
-          <img [src]="markerDestino.data.image" alt="">
+          <img [src]="" alt="">
         </div>
       </ion-col>
       <ion-col>
         <div *ngIf="markerSelected">
           <p>{{markerDestino.data.name}}</p>
-          <p>{{markerDestino.data.carDetail.type}}</p>
-          <p>{{markerDestino.data.carDetail.model}}-{{markerDestino.data.carDetail.id}}</p>
-          <p>{{markerDestino.data.carDetail.modelYear}}</p>
+          <p>{{markerDestino.data.carDetail.marca}}&nbsp;-&nbsp;{{markerDestino.data.carDetail.reference}}</p>
+          <p>{{markerDestino.data.carDetail.placa}}</p>
+          <p>{{markerDestino.data.carDetail.model}}</p>
         </div>
       </ion-col>
       <ion-col>
-        <button ion-button (click)="getDirections()" ><ion-icon name="car"></ion-icon>&nbsp;Direcciones</button>
+        <button ion-button (click)="getDirections()"><ion-icon name="car"></ion-icon>&nbsp;Direcciones</button>
       </ion-col>
     </ion-row>
   </ion-grid>
