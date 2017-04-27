@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import { NavController } from 'ionic-angular';
-import { Home } from "../home/home.component";
-import {AppShipmentService} from "../../app/services/appShipment.service";
+import { AppShipmentService } from "../../app/services/appShipment.service";
+import {Home} from "../home/home.component";
 
 @Component({
     templateUrl: 'login.html'
@@ -20,24 +20,11 @@ export class Login {
     }
 
     login(){
-
-      this.appShipmentService.login();
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions ({ headers: headers });
-      var url = "http://localhost:9000/login";
-      console.log("Connecting...");
-      this.http.post(url,this.loginData, options).subscribe(
-        res => {
-          if (res.ok) {
-            console.log("Valid Credentials!!, sending to home");
-            this.navCtrl.setRoot(Home);
-          }
+      this.appShipmentService.login(this.loginData).subscribe(
+        (data:any) => {
+          this.navCtrl.setRoot(Home)
         },
-        err => {
-          if (err.status == 401){
-            console.log("Invañid Credentials!");
-          }
-        }
+        (error:any) => console.log(error.body)
       );
     }
 }
