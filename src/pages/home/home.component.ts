@@ -5,9 +5,9 @@ import { Geolocation } from 'ionic-native';
 declare var google;
 
 @Component({
-  templateUrl: 'maps.html',
+  templateUrl: 'home.html',
 })
-export class Maps implements OnInit{
+export class Home implements OnInit{
 
   @ViewChild('map') mapElement: ElementRef;
   map: any;

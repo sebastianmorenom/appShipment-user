@@ -1,17 +1,38 @@
-<ion-header>
+<ion-header xmlns="http://www.w3.org/1999/html">
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>
+      Map
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="loadMap()"><ion-icon name="map"></ion-icon>&nbsp;Load MAP</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content>
+  <div #map id="map"></div>
+  <div id="panel" style="width: 300px; float: right;"></div>
+  <ion-grid>
+    <ion-row>
+      <ion-col offset-2="">
+        <div *ngIf="markerSelected">
+          <img [src]="markerDestino.data.image" alt="">
+        </div>
+      </ion-col>
+      <ion-col>
+        <div *ngIf="markerSelected">
+          <p>{{markerDestino.data.name}}</p>
+          <p>{{markerDestino.data.carDetail.type}}</p>
+          <p>{{markerDestino.data.carDetail.model}}-{{markerDestino.data.carDetail.id}}</p>
+          <p>{{markerDestino.data.carDetail.modelYear}}</p>
+        </div>
+      </ion-col>
+      <ion-col>
+        <button ion-button (click)="getDirections()" ><ion-icon name="car"></ion-icon>&nbsp;Direcciones</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div>
+
+  </div>
 </ion-content>
