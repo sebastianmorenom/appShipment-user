@@ -22,6 +22,7 @@ export class Home implements OnInit{
   public markerSelected: boolean;
   iconUserDetail:any;
   iconTransDetail:any;
+  iconTrans:any;
   data:any;
 
   info:any;
@@ -37,6 +38,9 @@ export class Home implements OnInit{
     this.iconTransDetail = {
       url: '../assets/icon/carPos.png'
     };
+    this.iconTrans = {
+      url: '../assets/icon/car.png'
+    }
   }
 
   ngOnInit(){
