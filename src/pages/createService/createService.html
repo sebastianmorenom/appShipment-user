@@ -42,17 +42,17 @@
             </ion-col>
             <ion-col col-3>
               <div class="centered">
-                <button ion-button [color]="dimensiones[0]" full round>Pequeño</button>
+                <button ion-button [color]="dimensiones[0]" full round (click)="selectDimention(0)">Pequeño</button>
               </div>
             </ion-col>
             <ion-col col-3>
               <div class="centered">
-                <button ion-button [color]="dimensiones[1]" full round>Mediano</button>
+                <button ion-button [color]="dimensiones[1]" full round (click)="selectDimention(1)">Mediano</button>
               </div>
             </ion-col>
             <ion-col col-3>
               <div class="centered">
-                <button ion-button [color]="dimensiones[2]" full round>Grande</button>
+                <button ion-button [color]="dimensiones[2]" full round (click)="selectDimention(2)">Grande</button>
               </div>
             </ion-col>
           </ion-row>
