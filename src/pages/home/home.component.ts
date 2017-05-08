@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild, ElementRef} from "@angular/core";
 import { NavController } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import {AppShipmentService} from "../../app/services/appShipment.service";
+import { CreateService } from '../createService/createService.component'
 
 declare var google;
 
@@ -45,7 +46,6 @@ export class Home implements OnInit{
 
   ngOnInit(){
     this.loadMap();
-
   }
 
   loadMap(){
@@ -54,10 +54,10 @@ export class Home implements OnInit{
     this.directionsRender = new google.maps.DirectionsRenderer();
     Geolocation.getCurrentPosition().then(
       (position) => {
-        //let centerMap = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        let centerMap = new google.maps.LatLng(4.670191, -74.058528);
-        //this.appShipmentService.getTransporters({estado:"S", position.coords.latitude, lng:  position.coords.longitude}).subscribe(
-        this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
+        let centerMap = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        //let centerMap = new google.maps.LatLng(4.670191, -74.058528);
+        this.appShipmentService.getTransporters({estado:"S", lat: position.coords.latitude, lng:  position.coords.longitude}).subscribe(
+        //this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
           (data:any) => {
             this.data = data;
             console.log(this.data);
@@ -167,6 +167,11 @@ export class Home implements OnInit{
       alert("Cant retrieve routes");
     }
   };
+
+  createService() {
+    console.log(this.markerOrigen)
+    //this.navCtrl.push(CreateService);
+  }
 
   addInfoWindow(marker, content){
 

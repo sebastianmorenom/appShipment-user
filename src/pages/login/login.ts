@@ -9,22 +9,32 @@ import {Home} from "../home/home.component";
 })
 export class Login {
 
-    loginData = {
-        username:"",
-        password:""
-    };
+  loading:boolean;
+  loginData = {
+      username:"",
+      password:""
+  };
 
-    constructor(private http:Http, private navCtrl: NavController, private appShipmentService: AppShipmentService) {
-      this.loginData.username = "fizz@seajoker.com";
-      this.loginData.password = "fizz";
-    }
+  constructor(private http:Http, private navCtrl: NavController, private appShipmentService: AppShipmentService) {
+    this.loginData.username = "fizz@seajoker.com";
+    this.loginData.password = "fizz";
+    this.loading = false;
+  }
 
-    login(){
-      this.appShipmentService.login(this.loginData).subscribe(
-        (data:any) => {
-          this.navCtrl.setRoot(Home)
-        },
-        (error:any) => console.log(error.body)
-      );
-    }
+  login(){
+    this.loading = true;
+    this.appShipmentService.login(this.loginData).subscribe(
+      (data:any) => {
+        this.loading = false;
+        this.navCtrl.setRoot(Home)
+      },
+      (error:any) => {
+        this.loading = false;
+        console.log(error.body)
+      },
+      () => {
+        this.loading = false;
+      }
+    );
+  }
 }

@@ -10,16 +10,20 @@
 </ion-header>
 
 <ion-content>
-  <div #map id="map"></div>
+  <div #map id="map">
+  </div>
   <div id="panel" style="width: 300px; float: right;"></div>
   <ion-grid>
     <ion-row>
-      <ion-col offset-2="">
+      <ion-col center>
         <div *ngIf="markerSelected">
           <img [src]="iconTrans.url" alt="">
         </div>
       </ion-col>
       <ion-col>
+        <ion-fab top center edge>
+          <button ion-fab (click)="createService()"><ion-icon name="add"></ion-icon></button>
+        </ion-fab>
         <div *ngIf="markerSelected">
           <p>{{markerDestino.data.name}}</p>
           <p>{{markerDestino.data.carDetail.marca}}&nbsp;-&nbsp;{{markerDestino.data.carDetail.reference}}</p>
@@ -32,7 +36,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div>
-
-  </div>
 </ion-content>

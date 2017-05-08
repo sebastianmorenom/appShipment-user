@@ -7,6 +7,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { TabsPage } from '../pages/tabs/tabs';
 import { Login } from "../pages/login/login";
 import { Home } from "../pages/home/home.component";
+import {CreateService} from "../pages/createService/createService.component";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { Home } from "../pages/home/home.component";
     ContactPage,
     TabsPage,
     Login,
-    Home
+    Home,
+    CreateService
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -27,7 +29,8 @@ import { Home } from "../pages/home/home.component";
     ContactPage,
     TabsPage,
     Login,
-    Home
+    Home,
+    CreateService
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AppShipmentService]
 })
