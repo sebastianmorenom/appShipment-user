@@ -169,8 +169,7 @@ export class Home implements OnInit{
   };
 
   createService() {
-    console.log(this.markerOrigen)
-    //this.navCtrl.push(CreateService);
+    this.navCtrl.push(CreateService);
   }
 
   addInfoWindow(marker, content){

@@ -4,5 +4,8 @@ import {Component} from "@angular/core";
   templateUrl: 'createService.html'
 })
 export class CreateService {
-  constructor(){}
+  dimensiones:any;
+  constructor(){
+    this.dimensiones = ['light', 'dark', 'light']
+  }
 }

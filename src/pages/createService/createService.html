@@ -8,7 +8,59 @@
 <ion-content>
   <ion-grid>
     <ion-row justify-content-center>
-      <ion-col col-sm-8="">
+      <ion-col col-sm-7 col-12>
+        <ion-list>
+          <ion-item-divider>
+            <div class="centered">Detalles de destino</div>
+          </ion-item-divider>
+          <ion-item>
+            <ion-label color="primary" stacked>Dirección</ion-label>
+            <ion-input placeholder="Dirección de envio del paquete"></ion-input>
+            <ion-icon name="locate" item-right></ion-icon>
+          </ion-item>
+          <ion-item>
+            <ion-label color="primary" stacked>Destinatario</ion-label>
+            <ion-input placeholder="Nombre de quién recibe el paquete"></ion-input>
+          </ion-item>
+          <br>
+          <ion-item-divider>
+            <div class="centered" >Detalles del paquete</div>
+          </ion-item-divider>
+          <ion-item>
+            <ion-label color="primary" stacked>Declaración de contenido</ion-label>
+            <ion-textarea  placeholder="Todo lo que contiene el paquete"></ion-textarea>
+          </ion-item>
+          <ion-item>
+            <ion-label color="primary" stacked>Valor declarado</ion-label>
+            <ion-input type="numeric" placeholder="5.00"></ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-col col-3>
+              <div style="padding-left: 16px">
+                <ion-label color="primary">Dimensiones</ion-label>
+              </div>
+            </ion-col>
+            <ion-col col-3>
+              <div class="centered">
+                <button ion-button [color]="dimensiones[0]" full round>Pequeño</button>
+              </div>
+            </ion-col>
+            <ion-col col-3>
+              <div class="centered">
+                <button ion-button [color]="dimensiones[1]" full round>Mediano</button>
+              </div>
+            </ion-col>
+            <ion-col col-3>
+              <div class="centered">
+                <button ion-button [color]="dimensiones[2]" full round>Grande</button>
+              </div>
+            </ion-col>
+          </ion-row>
+          <br>
+          <ion-item-divider>
+            <div class="centered">Detalles del servicio</div>
+          </ion-item-divider>
+        </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
