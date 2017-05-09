@@ -8,7 +8,6 @@ import {Home} from "../home/home.component";
     templateUrl: 'login.html'
 })
 export class Login {
-
   loading:boolean;
   loginData = {
       username:"",
@@ -26,7 +25,7 @@ export class Login {
     this.appShipmentService.login(this.loginData).subscribe(
       (data:any) => {
         this.loading = false;
-        this.navCtrl.setRoot(Home)
+        this.navCtrl.setRoot(Home, {user:data})
       },
       (error:any) => {
         this.loading = false;

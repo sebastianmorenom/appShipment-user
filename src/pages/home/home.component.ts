@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, ElementRef} from "@angular/core";
-import { NavController } from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import {AppShipmentService} from "../../app/services/appShipment.service";
 import { CreateService } from '../createService/createService.component'
@@ -25,10 +25,11 @@ export class Home implements OnInit{
   iconTransDetail:any;
   iconTrans:any;
   data:any;
+  user:any;
 
   info:any;
 
-  constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService) {
+  constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService, private navParams:NavParams) {
     this.markerSelected=false;
     this.markersTrans = [];
     this.markerOrigen = null;
@@ -42,6 +43,7 @@ export class Home implements OnInit{
     this.iconTrans = {
       url: '../assets/icon/car.png'
     }
+    this.user = navParams.get('user');
   }
 
   ngOnInit(){
@@ -54,10 +56,10 @@ export class Home implements OnInit{
     this.directionsRender = new google.maps.DirectionsRenderer();
     Geolocation.getCurrentPosition().then(
       (position) => {
-        let centerMap = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        //let centerMap = new google.maps.LatLng(4.670191, -74.058528);
-        this.appShipmentService.getTransporters({estado:"S", lat: position.coords.latitude, lng:  position.coords.longitude}).subscribe(
-        //this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
+        //let centerMap = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        let centerMap = new google.maps.LatLng(4.670191, -74.058528);
+        //this.appShipmentService.getTransporters({estado:"S", lat: position.coords.latitude, lng:  position.coords.longitude}).subscribe(
+        this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
           (data:any) => {
             this.data = data;
             console.log(this.data);
@@ -169,7 +171,7 @@ export class Home implements OnInit{
   };
 
   createService() {
-    this.navCtrl.push(CreateService);
+    this.navCtrl.push(CreateService, {user:this.user});
   }
 
   addInfoWindow(marker, content){
