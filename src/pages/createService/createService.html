@@ -16,22 +16,44 @@
             </ion-item-divider>
             <ion-item>
               <ion-label color="primary" stacked>Dirección</ion-label>
-              <ion-input placeholder="Dirección de envio del paquete" formControlName="toLocation"></ion-input>
+              <ion-input placeholder="Cra 123 # 32 65" [value]="locations.destino.address" disabled></ion-input>
               <ion-icon name="locate" item-right></ion-icon>
             </ion-item>
-            <p class="error"
-               *ngIf="!formCreateService.controls.toLocation.valid && (formCreateService.controls.toLocation.dirty
-                 || formCreateService.controls.toLocation.touched || submitAttempt)">
-              Por favor ingrese la dirección de destino.
-            </p>
             <ion-item>
-              <ion-label color="primary" stacked>Destinatario</ion-label>
+              <ion-label color="primary" stacked>Nombre del destinatario</ion-label>
               <ion-input placeholder="Nombre de quién recibe el paquete" formControlName="toName"></ion-input>
             </ion-item>
             <p class="error"
                *ngIf="!formCreateService.controls.toName.valid && (formCreateService.controls.toName.dirty
                  || formCreateService.controls.toName.touched || submitAttempt)">
               Por favor ingrese el nombre de la persona que recibirá el paquete.
+            </p>
+            <ion-item>
+              <ion-label color="primary" stacked>Tipod e identificación</ion-label>
+              <ion-input placeholder="CC" formControlName="toIdType"></ion-input>
+            </ion-item>
+            <p class="error"
+               *ngIf="!formCreateService.controls.toIdType.valid && (formCreateService.controls.toIdType.dirty
+                 || formCreateService.controls.toIdType.touched || submitAttempt)">
+              Por favor ingrese el tipod de identifiación de la persona que recibirá el paquete.
+            </p>
+            <ion-item>
+              <ion-label color="primary" stacked>Identificación del destinatario</ion-label>
+              <ion-input placeholder="1010123123" formControlName="toId"></ion-input>
+            </ion-item>
+            <p class="error"
+               *ngIf="!formCreateService.controls.toId.valid && (formCreateService.controls.toId.dirty
+                 || formCreateService.controls.toId.touched || submitAttempt)">
+              Por favor ingrese el número de identificación de la persona que recibirá el paquete.
+            </p>
+            <ion-item>
+              <ion-label color="primary" stacked>Identificación del destinatario</ion-label>
+              <ion-input placeholder="300 543 0987" formControlName="toNumTel"></ion-input>
+            </ion-item>
+            <p class="error"
+               *ngIf="!formCreateService.controls.toNumTel.valid && (formCreateService.controls.toNumTel.dirty
+                 || formCreateService.controls.toNumTel.touched || submitAttempt)">
+              Por favor ingrese el número de telefono de la persona que recibirá el paquete.
             </p>
             <br>
             <ion-item-divider>
