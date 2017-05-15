@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild, ElementRef, ApplicationRef, ChangeDetectorRef} from "@angular/core";
+import {Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef} from "@angular/core";
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import {AppShipmentService} from "../../app/services/appShipment.service";
 import { CreateService } from '../createService/createService.component'
 import {GoogleMapServices} from "../../app/services/googleMap.services";
 
-declare var google;
+declare let google;
 
 @Component({
   templateUrl: 'home.html',
@@ -37,7 +37,7 @@ export class Home implements OnInit{
 
   constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService, private alertCtrl: AlertController,
               private navParams:NavParams, private googleMapServide:GoogleMapServices,
-              private changeDetection: ChangeDetectorRef, private appRef:ApplicationRef) {
+              private changeDetection: ChangeDetectorRef) {
     this.markerSelected=false;
     this.locations = {from:{}, to:{}};
     this.markersTrans = [];
@@ -76,7 +76,7 @@ export class Home implements OnInit{
             this.addMarkerWithPos(this.markerOption, event.latLng);
             this.getAddressFromPos(this.markerOption, event.latLng.lat(), event.latLng.lng());
             this.markerOption = undefined;
-            this.appRef.tick();
+            this.changeDetection.detectChanges();
           }
         });
       },
@@ -140,7 +140,7 @@ export class Home implements OnInit{
   }
 
   loadTransMasrkers(){
-    for(var i=0; i<this.data.length; i++){
+    for(let i=0; i<this.data.length; i++){
       let pos = new google.maps.LatLng(this.data[i].pos.lat, this.data[i].pos.lng);
       this.markersTrans.push(new google.maps.Marker());
       this.markersTrans[i] = this.putMarker(this.map, this.markersTrans[i], pos, this.iconTransDetail, this.data[i]);
@@ -149,7 +149,7 @@ export class Home implements OnInit{
 
   getDirections(){
     console.log("getting directions!");
-    var request = {
+    let request = {
       origin:this.markerOrigen.position,
       destination:this.markerDestino.position,
       travelMode: google.maps.DirectionsTravelMode.DRIVING
@@ -207,7 +207,7 @@ export class Home implements OnInit{
         if(opt==2){
           this.markerDestinoAddress = data.results[0].formatted_address;
         }
-        this.appRef.tick();
+        this.changeDetection.detectChanges();
       }
     );
   }
