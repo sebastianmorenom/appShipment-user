@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import { AlertController } from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NavParams} from "ionic-angular";
+import {AppShipmentService} from "../../app/services/appShipment.service";
 
 @Component({
   templateUrl: 'createService.html'
@@ -14,17 +15,18 @@ export class CreateService {
   user:any;
   locations:any;
 
-  constructor(private formBuilder:FormBuilder, private navParams:NavParams, private alertCtrl: AlertController){
+  constructor(private formBuilder:FormBuilder, private navParams:NavParams, private alertCtrl: AlertController,
+              private appShipmentService:AppShipmentService){
     this.submitAttempt = false;
     this.dimensiones = ['light', 'primary', 'light'];
     this.currentDimension = 1;
     this.formCreateService = formBuilder.group({
-      toName: ['', Validators.compose([Validators.required, Validators.maxLength(30)])],
+      toName: ['Laura', Validators.compose([Validators.required, Validators.maxLength(30)])],
       toIdType: ['CC', Validators.compose([Validators.required, Validators.maxLength(2)])],
-      toId: ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]+$")])],
-      toNumTel: ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]+$"), Validators.maxLength(10)])],
-      contentDeclaration: ['', Validators.compose([Validators.required, Validators.maxLength(120)])],
-      valueDeclaration: ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]+$")])],
+      toId: ['1026781232', Validators.compose([Validators.required, Validators.pattern("^[0-9]+$")])],
+      toNumTel: ['3004232678', Validators.compose([Validators.required, Validators.pattern("^[0-9]+$"), Validators.maxLength(10)])],
+      contentDeclaration: ['Muchas Cosas', Validators.compose([Validators.required, Validators.maxLength(120)])],
+      valueDeclaration: ['300000', Validators.compose([Validators.required, Validators.pattern("^[0-9]+$")])],
       dimension: [this.currentDimension, Validators.compose([Validators.required, Validators.pattern("^[0-9]$")])]
     });
     this.user = this.navParams.get('user');
@@ -47,7 +49,18 @@ export class CreateService {
       alert("Creating service!");
       this.formCreateService.value.user = this.user;
       this.formCreateService.value.locations = this.locations;
-      console.log(this.formCreateService.value);
+      let data = {
+        estado:"S",
+        lat: this.locations.origen.lat,
+        lng: this.locations.origen.lng
+      };
+      this.appShipmentService.getTransporters(data).subscribe(
+        //this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
+        (data:any) => {
+          this.formCreateService.value.transporterId = data[0].id;
+          console.log(this.formCreateService.value);
+        }
+      );
     }
   }
 
