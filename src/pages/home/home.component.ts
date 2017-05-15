@@ -1,8 +1,9 @@
-import {Component, OnInit, ViewChild, ElementRef} from "@angular/core";
-import {NavController, NavParams} from 'ionic-angular';
+import {Component, OnInit, ViewChild, ElementRef, ApplicationRef, ChangeDetectorRef} from "@angular/core";
+import {AlertController, NavController, NavParams} from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 import {AppShipmentService} from "../../app/services/appShipment.service";
 import { CreateService } from '../createService/createService.component'
+import {GoogleMapServices} from "../../app/services/googleMap.services";
 
 declare var google;
 
@@ -14,35 +15,37 @@ export class Home implements OnInit{
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   markerOrigen: any;
-  public markerDestino: any;
+  markerOrigenAddress: any;
+  markerDestino: any;
+  markerDestinoAddress: any;
+  markerOption: number;
   markersTrans: any;
   directionsService: any;
   directionsRender: any;
   directionsResult: any;
   directionsStatus: any;
   public markerSelected: boolean;
-  iconUserDetail:any;
+  iconUserDetailFrom:any;
+  iconUserDetailTo:any;
   iconTransDetail:any;
   iconTrans:any;
   data:any;
   user:any;
+  locations:any;
 
   info:any;
 
-  constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService, private navParams:NavParams) {
+  constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService, private alertCtrl: AlertController,
+              private navParams:NavParams, private googleMapServide:GoogleMapServices,
+              private changeDetection: ChangeDetectorRef, private appRef:ApplicationRef) {
     this.markerSelected=false;
+    this.locations = {from:{}, to:{}};
     this.markersTrans = [];
     this.markerOrigen = null;
-    this.markerDestino = {data:{carDetail:{}}};
-    this.iconUserDetail = {
-      url: '../assets/icon/userPos.png'
-    };
-    this.iconTransDetail = {
-      url: '../assets/icon/carPos.png'
-    };
-    this.iconTrans = {
-      url: '../assets/icon/car.png'
-    }
+    this.iconUserDetailFrom = {url: '../assets/icon/userPos.png'};
+    this.iconUserDetailTo = {url: '../assets/icon/userPos2.png'};
+    this.iconTransDetail = {url: '../assets/icon/carPos.png'};
+    this.iconTrans = {url: '../assets/icon/car.png'};
     this.user = navParams.get('user');
   }
 
@@ -56,16 +59,9 @@ export class Home implements OnInit{
     this.directionsRender = new google.maps.DirectionsRenderer();
     Geolocation.getCurrentPosition().then(
       (position) => {
-        //let centerMap = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        let centerMap = new google.maps.LatLng(4.670191, -74.058528);
-        //this.appShipmentService.getTransporters({estado:"S", lat: position.coords.latitude, lng:  position.coords.longitude}).subscribe(
-        this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
-          (data:any) => {
-            this.data = data;
-            console.log(this.data);
-            this.loadTransMasrkers();
-          }
-        );
+        let centerMap = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        //let centerMap = new google.maps.LatLng(4.670191, -74.058528);
+        this.getTransporters(position);
         let mapOptions = {
           center: centerMap,
           zoom: 15,
@@ -74,8 +70,14 @@ export class Home implements OnInit{
 
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
         this.addMarkerCenterMap(1);
+        this.getAddressFromPos(1, position.coords.latitude, position.coords.longitude);
         this.map.addListener('click', (event)=>{
-          this.addMarkerWithPos(1, event.latLng);
+          if(this.markerOption){
+            this.addMarkerWithPos(this.markerOption, event.latLng);
+            this.getAddressFromPos(this.markerOption, event.latLng.lat(), event.latLng.lng());
+            this.markerOption = undefined;
+            this.appRef.tick();
+          }
         });
       },
       (err) => {
@@ -89,13 +91,13 @@ export class Home implements OnInit{
       if(this.markerOrigen){
         this.markerOrigen.setMap(null);
       }
-      this.markerOrigen = this.putMarker(this.map, this.markerOrigen, this.map.getCenter(), this.iconUserDetail);
+      this.markerOrigen = this.putMarker(this.map, this.markerOrigen, this.map.getCenter(), this.iconUserDetailFrom);
     }
     if( opt === 2 ){
       if(this.markerDestino){
         this.markerDestino.setMap(null);
       }
-      this.markerDestino = this.putMarker(this.map, this.markerDestino, this.map.getCenter(), this.iconTransDetail);
+      this.markerDestino = this.putMarker(this.map, this.markerDestino, this.map.getCenter(), this.iconUserDetailTo);
     }
   }
 
@@ -105,13 +107,13 @@ export class Home implements OnInit{
       if(this.markerOrigen){
         this.markerOrigen.setMap(null);
       }
-      this.markerOrigen = this.putMarker(this.map, this.markerOrigen, pos, this.iconUserDetail);
+      this.markerOrigen = this.putMarker(this.map, this.markerOrigen, pos, this.iconUserDetailFrom);
     }
     if( opt === 2 ){
       if(this.markerDestino){
         this.markerDestino.setMap(null);
       }
-      this.markerDestino = this.putMarker(this.map, this.markerDestino, pos, this.iconTransDetail);
+      this.markerDestino = this.putMarker(this.map, this.markerDestino, pos, this.iconUserDetailTo);
     }
   };
 
@@ -124,10 +126,17 @@ export class Home implements OnInit{
       icon: iconDetail,
       data: data
     });
-    marker.addListener('click', ()=>{
-      this.updateDestinoInfo(marker);
-    });
     return marker;
+  }
+
+  getTransporters(position){
+    this.appShipmentService.getTransporters({estado:"S", lat: position.coords.latitude, lng:  position.coords.longitude}).subscribe(
+      //this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
+      (data:any) => {
+        this.data = data;
+        this.loadTransMasrkers();
+      }
+    );
   }
 
   loadTransMasrkers(){
@@ -136,12 +145,6 @@ export class Home implements OnInit{
       this.markersTrans.push(new google.maps.Marker());
       this.markersTrans[i] = this.putMarker(this.map, this.markersTrans[i], pos, this.iconTransDetail, this.data[i]);
     }
-  }
-
-  updateDestinoInfo(marker){
-    this.markerSelected = true;
-    this.markerDestino = marker;
-    console.log(this.markerDestino.data)
   }
 
   getDirections(){
@@ -170,19 +173,51 @@ export class Home implements OnInit{
     }
   };
 
-  createService() {
-    this.navCtrl.push(CreateService, {user:this.user});
+  changeMarkersPosition(opt){
+    this.markerOption = opt;
   }
 
-  addInfoWindow(marker, content){
+  createService() {
+    if (this.markerOrigenAddress && this.markerDestinoAddress){
+      let locations = {
+        origen : {
+          lat:this.markerOrigen.position.lat(),
+          lng:this.markerOrigen.position.lng(),
+          address:this.markerOrigenAddress
+        },
+        destino:{
+          lat:this.markerDestino.position.lat(),
+          lng:this.markerDestino.position.lng(),
+          address:this.markerDestinoAddress
+        }
+      };
+      this.navCtrl.push(CreateService, {user:this.user, locations:locations});
+    }
+    else {
+      this.presentAlert();
+    }
+  }
 
-    let infoWindow = new google.maps.InfoWindow({
-      content: content
+  getAddressFromPos(opt, lat, lng){
+    this.googleMapServide.getAddressFromLatLng(lat, lng).subscribe(
+      (data) => {
+        if(opt==1){
+          this.markerOrigenAddress = data.results[0].formatted_address;
+        }
+        if(opt==2){
+          this.markerDestinoAddress = data.results[0].formatted_address;
+        }
+        this.appRef.tick();
+      }
+    );
+  }
+
+  presentAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Para donde vamos?!',
+      subTitle: 'Por favor, asegurece de poner el marcador de origen y destino en el mapa para continuar.',
+      buttons: ['OK']
     });
-
-    google.maps.event.addListener(marker, 'click', () => {
-      infoWindow.open(this.map, marker);
-    });
-
+    alert.present();
   }
 }
