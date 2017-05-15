@@ -8,6 +8,7 @@ import {AppShipmentService} from "../../app/services/appShipment.service";
   templateUrl: 'createService.html'
 })
 export class CreateService {
+  loading:boolean;
   dimensiones:any;
   currentDimension:number;
   formCreateService:FormGroup;
@@ -17,6 +18,7 @@ export class CreateService {
 
   constructor(private formBuilder:FormBuilder, private navParams:NavParams, private alertCtrl: AlertController,
               private appShipmentService:AppShipmentService){
+    this.loading = false;
     this.submitAttempt = false;
     this.dimensiones = ['light', 'primary', 'light'];
     this.currentDimension = 1;
@@ -43,24 +45,30 @@ export class CreateService {
   createService(){
     this.submitAttempt=true;
     if(!this.formCreateService.valid){
-      this.presentAlert();
+      this.presentAlertForm();
     }
     else {
-      alert("Creating service!");
-      this.formCreateService.value.user = this.user;
-      this.formCreateService.value.locations = this.locations;
       let data = {
         estado:"S",
         lat: this.locations.origen.lat,
         lng: this.locations.origen.lng
       };
+      this.loading = true;
       this.appShipmentService.getTransporters(data).subscribe(
         //this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
         (data:any) => {
-          this.formCreateService.value.transporterId = data[0].id;
-          this.appShipmentService.createService(this.formCreateService.value).subscribe(
-            service => {
-              console.log(service);
+          this.formCreateService.value.idTransportador = data[0].id;
+          let serviceData = this.createServiceData();
+          console.log(serviceData);
+          this.appShipmentService.createService(serviceData).subscribe(
+            response => {
+              this.loading=false;
+              this.presentAlertSuccessCreateService();
+              console.log(response);
+            },
+            error => {
+              this.presentAlertErrorCreateService();
+              console.log(error);
             }
           );
         }
@@ -68,10 +76,47 @@ export class CreateService {
     }
   }
 
-  presentAlert() {
+  createServiceData(){
+    return {
+      idTransporter: this.formCreateService.value.idTransportador,
+      idUser: this.user.id,
+      origen: this.locations.origen,
+      destino: this.locations.destino,
+      addressee: {
+        name: this.formCreateService.value.toName,
+        idType: this.formCreateService.value.toIdType,
+        id: this.formCreateService.value.toId,
+        numTel: this.formCreateService.value.toNumTel,
+        contentDeclaration: this.formCreateService.value.contentDeclaration,
+        valueDeclaration: this.formCreateService.value.valueDeclaration,
+        dimension: this.formCreateService.value.dimension
+      },
+      status:"SB"
+    };
+  }
+
+  presentAlertForm() {
     let alert = this.alertCtrl.create({
       title: 'Datos incorrectos!',
       subTitle: 'Por favor, revise los datos, y busque nuevamente.',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  presentAlertErrorCreateService() {
+    let alert = this.alertCtrl.create({
+      title: 'Lo sentimos!',
+      subTitle: 'No se pudo crear el servicio, porfavor intentelo nuevamente.',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  presentAlertSuccessCreateService(){
+    let alert = this.alertCtrl.create({
+      title: 'Perfecto!!',
+      subTitle: 'Tu servicio se a creado correctamente.',
       buttons: ['OK']
     });
     alert.present();

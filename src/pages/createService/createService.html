@@ -107,9 +107,14 @@
             <ion-label>* La tarjeta de pago para este servicio es: VISA ****7333 .</ion-label>
             <br>
             <ion-row justify-content-center>
+              <div style="text-align: center">
+                <ion-spinner name="circles" *ngIf="loading"></ion-spinner>
+              </div>
+            </ion-row>
+            <ion-row justify-content-center>
               <ion-col col-4>
                 <div class="centered">
-                  <button ion-button  round outline (click)="createService()">
+                  <button ion-button  round outline (click)="createService()" [disabled]="loading">
                     <ion-label>Buscar </ion-label>
                     <ion-icon name="search"></ion-icon>
                   </button>
