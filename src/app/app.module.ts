@@ -8,6 +8,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { Login } from "../pages/login/login";
 import { Home } from "../pages/home/home.component";
 import {CreateService} from "../pages/createService/createService.component";
+import {GoogleMapServices} from "./services/googleMap.services";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,6 @@ import {CreateService} from "../pages/createService/createService.component";
     Home,
     CreateService
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AppShipmentService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AppShipmentService, GoogleMapServices]
 })
 export class AppModule {}
