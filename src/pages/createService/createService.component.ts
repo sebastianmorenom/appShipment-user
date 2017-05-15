@@ -58,7 +58,11 @@ export class CreateService {
         //this.appShipmentService.getTransporters({estado:"S", lat: 4.670191, lng:  -74.058528}).subscribe(
         (data:any) => {
           this.formCreateService.value.transporterId = data[0].id;
-          console.log(this.formCreateService.value);
+          this.appShipmentService.createService(this.formCreateService.value).subscribe(
+            service => {
+              console.log(service);
+            }
+          );
         }
       );
     }
