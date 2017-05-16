@@ -5,16 +5,20 @@ import 'rxjs/RX';
 @Injectable()
 export class AppShipmentService {
 
-  private url:String = "http://localhost:9000";
+  private url:String = "http://198.168.0.6:9000";
 
   constructor (private http:Http){}
 
   login(data){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({ 'Content-Type': 'application/json' , 'Access-Control-Allow-Origin':'*'});
     let options = new RequestOptions ({ headers: headers });
     return this.http.post(this.url+"/login", data, options).map(
       (response:Response) => {
         const data = response.json();
+        return data;
+      },
+      (error) => {
+        const data = error.json();
         return data;
       }
     );
