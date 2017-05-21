@@ -4,6 +4,7 @@ import {AlertController, NavController} from 'ionic-angular';
 import { AppShipmentService } from "../../app/services/appShipment.service";
 import {Home} from "../home/home.component";
 import {GoogleMapServices} from "../../app/services/googleMap.services";
+import {Tracking} from "../tracking/tracking.component";
 
 @Component({
     templateUrl: 'login.html'
@@ -55,7 +56,7 @@ export class Login {
               this.googleMapServices.getAddressFromLatLng(this.activeService.origen.lat, this.activeService.origen.lng).subscribe(
                 dataDestino => {
                   this.activeService.destino.address = dataDestino.results[0].formatted_address;
-                  console.log(this.activeService);
+                  this.navCtrl.setRoot(Tracking, {user:userInfo, activeService:this.activeService});
                 }
               )
             }
