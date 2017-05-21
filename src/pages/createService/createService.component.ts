@@ -15,6 +15,7 @@ export class CreateService {
   submitAttempt:boolean;
   user:any;
   locations:any;
+  activeService:any;
 
   constructor(private formBuilder:FormBuilder, private navParams:NavParams, private alertCtrl: AlertController,
               private appShipmentService:AppShipmentService){
@@ -59,12 +60,17 @@ export class CreateService {
         (data:any) => {
           this.formCreateService.value.idTransportador = data[0].id;
           let serviceData = this.createServiceData();
-          console.log(serviceData);
           this.appShipmentService.createService(serviceData).subscribe(
             response => {
               this.loading=false;
+              this.activeService = response;
               this.presentAlertSuccessCreateService();
-              console.log(response);
+              this.appShipmentService.getTransporterById({id:response.idTransporter}).subscribe(
+                responseTrans => {
+                  this.activeService.transporter = responseTrans;
+                  console.log(this.activeService);
+                }
+              );
             },
             error => {
               this.presentAlertErrorCreateService();

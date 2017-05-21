@@ -3,19 +3,24 @@ import { Http } from '@angular/http';
 import {AlertController, NavController} from 'ionic-angular';
 import { AppShipmentService } from "../../app/services/appShipment.service";
 import {Home} from "../home/home.component";
+import {GoogleMapServices} from "../../app/services/googleMap.services";
 
 @Component({
     templateUrl: 'login.html'
 })
 export class Login {
+  errorLoginMessage:string = "Se a producido un error al iniciar sesión. Intentelo mas tarde.";
+  errorActiveServicesMessage:string = "Se a producido un error consultando los servicios activos. Intentelo de nuevo.";
+  errorLoginTitle:string = "Error";
   loading:boolean;
   loginData = {
       username:"",
       password:""
   };
+  activeService:any;
 
   constructor(private http:Http, private navCtrl: NavController, private appShipmentService: AppShipmentService,
-              private alertCtrl: AlertController) {
+              private alertCtrl: AlertController, private googleMapServices:GoogleMapServices) {
     this.loginData.username = "fizz@seajoker.com";
     this.loginData.password = "fizz";
     this.loading = false;
@@ -25,13 +30,12 @@ export class Login {
     this.loading = true;
     this.appShipmentService.login(this.loginData).subscribe(
       (data:any) => {
-        this.loading = false;
-        this.navCtrl.setRoot(Home, {user:data})
+        this.verifyCurrentService(data);
       },
       (error:any) => {
         this.loading = false;
-        this.presentAlertError(error);
-        console.log(error.body)
+        this.presentAlert(this.errorLoginTitle, this.errorLoginMessage);
+        console.log(error)
       },
       () => {
         this.loading = false;
@@ -39,10 +43,39 @@ export class Login {
     );
   }
 
-  presentAlertError(error) {
+  verifyCurrentService(userInfo){
+    this.appShipmentService.getActiveService(userInfo).subscribe(
+      (response:any) => {
+        this.loading = false;
+        if (response.length > 0) {
+          this.activeService = response[0];
+          this.googleMapServices.getAddressFromLatLng(this.activeService.origen.lat, this.activeService.origen.lng).subscribe(
+            dataOrigen => {
+              this.activeService.origen.address = dataOrigen.results[0].formatted_address;
+              this.googleMapServices.getAddressFromLatLng(this.activeService.origen.lat, this.activeService.origen.lng).subscribe(
+                dataDestino => {
+                  this.activeService.destino.address = dataDestino.results[0].formatted_address;
+                  console.log(this.activeService);
+                }
+              )
+            }
+          );
+        }
+        else{
+          this.navCtrl.setRoot(Home, {user:userInfo});
+        }
+      },
+      (error:any) => {
+        this.presentAlert(this.errorLoginTitle, this.errorActiveServicesMessage);
+        console.log(error);
+      }
+    );
+  }
+
+  presentAlert(title,msg) {
     let alert = this.alertCtrl.create({
-      title: 'Error!',
-      subTitle: error,
+      title: title,
+      subTitle: msg,
       buttons: ['OK']
     });
     alert.present();
