@@ -1,7 +1,7 @@
 <ion-header xmlns="http://www.w3.org/1999/html">
   <ion-navbar>
     <ion-title>
-      Map
+      En servicio...
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="loadMap()"><ion-icon name="map"></ion-icon>&nbsp;Load MAP</button>
@@ -14,17 +14,12 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col center>
-      </ion-col>
-      <ion-col>
-        <ion-fab top center edge>
-          <button ion-fab (click)="createService()"><ion-icon name="add"></ion-icon></button>
-        </ion-fab>
+      <ion-col col-sm-12 col-md-4 offset-md-4>
         <ion-row>
           <ion-col col-11>
             <ion-item>
               <ion-label color="primary" stacked>Dirección origen</ion-label>
-              <ion-input placeholder="Cra 123 # 32 65" disabled [value]="markerOrigenAddress"></ion-input>
+              <ion-input placeholder="Cra 123 # 32 65" disabled [value]="activeService.origen.address"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col col-1>
@@ -38,7 +33,7 @@
           <ion-col col-11>
             <ion-item>
               <ion-label color="primary" stacked>Dirección destino</ion-label>
-              <ion-input placeholder="Cra 123 # 32 65"  disabled [value]="markerDestinoAddress"></ion-input>
+              <ion-input placeholder="Cra 123 # 32 65"  disabled [value]="activeService.destino.address"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col col-1>
@@ -49,8 +44,31 @@
           </ion-col>
         </ion-row>
       </ion-col>
-      <ion-col>
-        <button ion-button (click)="getDirections()"><ion-icon name="car"></ion-icon>&nbsp;Direcciones</button>
+    </ion-row>
+    <ion-row>
+      <ion-col col-sm-6 col-md-2 offset-md-4>
+        <div class="centered">
+          <img [src]="iconTrans.url">
+          <ion-row>
+            <ion-col >
+              <span>{{activeService.transporter.carDetail.marca}} - {{activeService.transporter.carDetail.reference}}</span>
+            </ion-col>
+            <ion-col >
+              <span>{{activeService.transporter.carDetail.placa}}</span>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+      <ion-col col-sm-6 col-md-2>
+        <div style="padding-left: 5px">
+            <ion-col>
+              <div style="padding-left: 15px">
+                <h4><ion-icon name="person"></ion-icon>&nbsp;{{activeService.transporter.name}}</h4>
+                <h5><ion-icon name="star-half"></ion-icon>&nbsp;{{activeService.transporter.calificacion}}</h5>
+                <button ion-button (click)="getDirections()"><ion-icon name="car"></ion-icon>&nbsp;Direcciones</button>
+              </div>
+            </ion-col>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
