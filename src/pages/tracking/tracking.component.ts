@@ -19,7 +19,6 @@ export class Tracking implements OnInit{
   directionsRender: any;
   directionsResult: any;
   directionsStatus: any;
-  public markerSelected: boolean;
   iconUserDetailFrom:any;
   iconUserDetailTo:any;
   iconTransDetail:any;
@@ -28,13 +27,15 @@ export class Tracking implements OnInit{
   user:any;
   activeService:any;
   locations:any;
+  cont:number;
+  transporterPosTask:any;
 
   info:any;
 
   constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService, private alertCtrl: AlertController,
               private navParams:NavParams, private googleMapServide:GoogleMapServices,
               private changeDetection: ChangeDetectorRef) {
-    this.markerSelected=false;
+    this.cont=0;
     this.markerTrans;
     this.markerOrigen = null;
     this.iconUserDetailFrom = {url: '../assets/icon/userPos.png'};
@@ -44,6 +45,9 @@ export class Tracking implements OnInit{
     this.user = navParams.get('user');
     this.activeService = navParams.get('activeService');
     console.log(this.activeService);
+    this.transporterPosTask = setInterval(()=>{
+      this.getTransporterPos();
+    },10000);
   }
 
   ngOnInit(){
@@ -66,7 +70,7 @@ export class Tracking implements OnInit{
     let transPos = new google.maps.LatLng(this.activeService.transporter.pos.lat, this.activeService.transporter.pos.lng);
     this.addMarkerWithPos(1, origenPos);
     this.addMarkerWithPos(2, destinoPos);
-    this.loadTransMasrker(transPos);
+    this.loadTransMarker(transPos);
   };
 
   addMarkerCenterMap(opt){
@@ -112,8 +116,8 @@ export class Tracking implements OnInit{
     return marker;
   }
 
-  loadTransMasrker(pos){
-    this.putMarker(this.map, this.markerTrans, pos, this.iconTransDetail);
+  loadTransMarker(pos){
+    this.markerTrans = this.putMarker(this.map, this.markerTrans, pos, this.iconTransDetail);
   }
 
   getDirections(){
@@ -141,6 +145,21 @@ export class Tracking implements OnInit{
       alert("Cant retrieve routes");
     }
   };
+
+  getTransporterPos(){
+    this.appShipmentService.getTransporterById({id:this.activeService.transporter.id}).subscribe(
+      (response) => {
+        this.activeService.transporter = response;
+        console.log(this.activeService);
+        this.updateTransporterMarker();
+      }
+    );
+  }
+
+  updateTransporterMarker(){
+    let pos = new google.maps.LatLng(this.activeService.transporter.pos.lat, this.activeService.transporter.pos.lng);
+    this.markerTrans.setPosition(pos);
+  }
 
   presentAlert() {
     let alert = this.alertCtrl.create({
