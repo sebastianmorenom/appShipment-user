@@ -27,15 +27,12 @@ export class Tracking implements OnInit{
   user:any;
   activeService:any;
   locations:any;
-  cont:number;
   transporterPosTask:any;
 
   info:any;
 
   constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService, private alertCtrl: AlertController,
-              private navParams:NavParams, private googleMapServide:GoogleMapServices,
-              private changeDetection: ChangeDetectorRef) {
-    this.cont=0;
+              private navParams:NavParams, private changeDetection: ChangeDetectorRef) {
     this.markerTrans;
     this.markerOrigen = null;
     this.iconUserDetailFrom = {url: '../assets/icon/userPos.png'};
