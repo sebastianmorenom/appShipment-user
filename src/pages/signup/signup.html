@@ -1,0 +1,73 @@
+<ion-header xmlns="http://www.w3.org/1999/html">
+  <ion-navbar>
+    <ion-title>
+      Registro
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <ion-grid>
+      <ion-row justify-content-center>
+        <ion-col col-sm-7 col-12>
+          <ion-list>
+            <ion-item-divider>
+              <div class="centered">Datos del usuario</div>
+            </ion-item-divider>
+            <ion-item>
+              <ion-label color="primary" stacked>Dirección de correo</ion-label>
+              <ion-input placeholder="andressierra@dominio.com" [value]=""></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary" stacked>Password</ion-label>
+              <ion-input type="password" placeholder="password" ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label color="primary" stacked>Confirmar password</ion-label>
+              <ion-input type="password" placeholder="password" ></ion-input>
+            </ion-item>
+
+            <br>
+            <ion-item-divider>
+              <div class="centered">Datos personales</div>
+            </ion-item-divider>
+
+            <ion-item>
+              <ion-label color="primary" stacked>Nombre</ion-label>
+              <ion-input placeholder="Andrés Sierra" ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label color="primary" stacked>Número identificación</ion-label>
+              <ion-input placeholder="1010123123" ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label color="primary" stacked>Número de teléfono</ion-label>
+              <ion-input placeholder="300 543 0987"></ion-input>
+            </ion-item>
+
+            <ion-row justify-content-center>
+              <div style="text-align: center">
+                <ion-spinner name="circles" *ngIf="loading"></ion-spinner>
+              </div>
+            </ion-row>
+            <br>
+            <ion-row justify-content-center>
+              <ion-col col-4>
+                <div class="centered">
+                  <button ion-button small  round outline (click)="createUser()" [disabled]="loading">
+                    <ion-label>Registrarse</ion-label>
+                    <ion-icon name="log-in"></ion-icon>
+                  </button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

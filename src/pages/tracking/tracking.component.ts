@@ -160,8 +160,8 @@ export class Tracking implements OnInit{
 
   presentAlert() {
     let alert = this.alertCtrl.create({
-      title: 'Para donde vamos?!',
-      subTitle: 'Por favor, asegurece de poner el marcador de origen y destino en el mapa para continuar.',
+      title: 'Cuidado!',
+      subTitle: 'Por favor, revise el estado de su paquete a la llegada, hemos detectado movimeintos bruscos durante el servicio que puedan haberlo comprometido.',
       buttons: ['OK']
     });
     alert.present();

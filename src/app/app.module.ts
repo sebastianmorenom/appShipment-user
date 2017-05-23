@@ -10,6 +10,7 @@ import { Home } from "../pages/home/home.component";
 import {CreateService} from "../pages/createService/createService.component";
 import {GoogleMapServices} from "./services/googleMap.services";
 import {Tracking} from "../pages/tracking/tracking.component";
+import {Signup} from "../pages/signup/signup.component";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {Tracking} from "../pages/tracking/tracking.component";
     Login,
     Home,
     CreateService,
-    Tracking
+    Tracking,
+    Signup
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -34,7 +36,8 @@ import {Tracking} from "../pages/tracking/tracking.component";
     Login,
     Home,
     CreateService,
-    Tracking
+    Tracking,
+    Signup
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AppShipmentService, GoogleMapServices]
 })

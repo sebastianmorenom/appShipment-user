@@ -5,6 +5,7 @@ import { AppShipmentService } from "../../app/services/appShipment.service";
 import {Home} from "../home/home.component";
 import {GoogleMapServices} from "../../app/services/googleMap.services";
 import {Tracking} from "../tracking/tracking.component";
+import {Signup} from "../signup/signup.component";
 
 @Component({
     templateUrl: 'login.html'
@@ -42,6 +43,10 @@ export class Login {
         this.loading = false;
       }
     );
+  }
+
+  signup(){
+    this.navCtrl.push(Signup);
   }
 
   verifyCurrentService(userInfo){

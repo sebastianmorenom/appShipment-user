@@ -27,10 +27,18 @@
     </div>
   </ion-row>
   <ion-row justify-content-center>
-    <div style="text-align: center">
-      <button ion-button outline (click)="login()" [disabled]="loading">Log in</button>
-    </div>
+    <ion-row>
+      <div style="text-align: center">
+        <button ion-button round (click)="login()" [disabled]="loading">Log in</button>
+      </div>
+    </ion-row>
   </ion-row>
-
+  <ion-row>
+    <ion-col col-sm-2 offset-sm-5>
+      <div style="text-align: center; padding-top: 20px">
+      <button ion-button outline small (click)="signup()" [disabled]="loading">Registrarse!</button>
+      </div>
+    </ion-col>
+  </ion-row>
 </ion-grid>
 
