@@ -15,9 +15,6 @@ import {Signup} from "../pages/signup/signup.component";
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    TabsPage,
     Login,
     Home,
     CreateService,
@@ -30,9 +27,6 @@ import {Signup} from "../pages/signup/signup.component";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    TabsPage,
     Login,
     Home,
     CreateService,
