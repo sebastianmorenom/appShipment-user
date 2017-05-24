@@ -1,0 +1,76 @@
+<ion-header xmlns="http://www.w3.org/1999/html">
+  <ion-navbar>
+    <ion-title>
+      Calificación del servicio
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col>
+    <ion-list>
+      <ion-item-divider>
+        <div class="centered">Como te parecio el servicio?</div>
+      </ion-item-divider>
+      <ion-item>
+        <p color="primary"> Califica a tu transportador y ayudanos a mejorar.</p>
+      </ion-item>
+    </ion-list>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-sm-6 col-md-2 offset-md-4>
+      <div class="centered">
+        <img [src]="iconTrans.url">
+        <ion-row>
+          <ion-col >
+            <span>{{activeService.transporter.carDetail.marca}} - {{activeService.transporter.carDetail.reference}}</span>
+          </ion-col>
+          <ion-col >
+            <span>{{activeService.transporter.carDetail.placa}}</span>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-col>
+    <ion-col col-sm-6 col-md-2>
+      <div style="padding-left: 5px">
+        <ion-col>
+          <div style="padding-left: 15px">
+            <h4><ion-icon name="person"></ion-icon>&nbsp;{{activeService.transporter.name}}</h4>
+            <h5><ion-icon name="star-half"></ion-icon>&nbsp;{{activeService.transporter.calificacion}}</h5>
+          </div>
+        </ion-col>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <button ion-button clear>
+        <ion-icon name="star"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button clear>
+        <ion-icon name="star"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button clear>
+        <ion-icon name="star"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button clear>
+      <ion-icon name="star"></ion-icon>
+    </button></ion-col>
+    <ion-col><button ion-button clear>
+      <ion-icon name="star"></ion-icon>
+    </button></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col offset-4="">
+      <button ion-button color="secondary" (click)="goRateService()"><ion-icon name="car"></ion-icon>&nbsp;Calificar</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

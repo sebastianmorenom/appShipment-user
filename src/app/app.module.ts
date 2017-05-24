@@ -2,15 +2,13 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { AppShipmentService } from "./services/appShipment.service";
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { TabsPage } from '../pages/tabs/tabs';
 import { Login } from "../pages/login/login";
 import { Home } from "../pages/home/home.component";
 import {CreateService} from "../pages/createService/createService.component";
 import {GoogleMapServices} from "./services/googleMap.services";
 import {Tracking} from "../pages/tracking/tracking.component";
 import {Signup} from "../pages/signup/signup.component";
+import {RateService} from "../pages/rateService/rateService.compoment";
 
 @NgModule({
   declarations: [
@@ -19,7 +17,8 @@ import {Signup} from "../pages/signup/signup.component";
     Home,
     CreateService,
     Tracking,
-    Signup
+    Signup,
+    RateService
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -31,7 +30,8 @@ import {Signup} from "../pages/signup/signup.component";
     Home,
     CreateService,
     Tracking,
-    Signup
+    Signup,
+    RateService
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AppShipmentService, GoogleMapServices]
 })

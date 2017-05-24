@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef} from "@angu
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {AppShipmentService} from "../../app/services/appShipment.service";
 import {GoogleMapServices} from "../../app/services/googleMap.services";
+import {RateService} from "../rateService/rateService.compoment";
 
 declare let google;
 
@@ -130,6 +131,10 @@ export class Tracking implements OnInit{
       this.printDirections()
     });
   };
+
+  goRateService(){
+    this.navCtrl.setRoot(RateService, {user:this.user, activeService:this.activeService});
+  }
 
   printDirections(){
     if (this.directionsStatus === "OK"){
