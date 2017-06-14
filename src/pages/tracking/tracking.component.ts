@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef} from "@angular/core";
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {AppShipmentService} from "../../app/services/appShipment.service";
-import {GoogleMapServices} from "../../app/services/googleMap.services";
 import {RateService} from "../rateService/rateService.compoment";
+import {GoogleMapServices} from "../../app/services/googleMap.services";
 
 declare let google;
 
@@ -28,12 +28,13 @@ export class Tracking implements OnInit{
   user:any;
   activeService:any;
   locations:any;
-  transporterPosTask:any;
+  serviceTask:any;
+  addresses:any;
 
   info:any;
 
   constructor(public navCtrl: NavController, private appShipmentService:AppShipmentService, private alertCtrl: AlertController,
-              private navParams:NavParams, private changeDetection: ChangeDetectorRef) {
+              private navParams:NavParams, private changeDetection: ChangeDetectorRef, private googleMapServices:GoogleMapServices) {
     this.markerTrans;
     this.markerOrigen = null;
     this.iconUserDetailFrom = {url: '../assets/icon/userPos.png'};
@@ -42,10 +43,12 @@ export class Tracking implements OnInit{
     this.iconTrans = {url: '/assets/icon/car.png'};
     this.user = navParams.get('user');
     this.activeService = navParams.get('activeService');
+    this.addresses = {origen:{}, destino:{}};
     console.log(this.activeService);
-    this.transporterPosTask = setInterval(()=>{
-      this.getTransporterPos();
+    this.serviceTask = setInterval(()=>{
+      this.updateServiceData();
     },10000);
+
   }
 
   ngOnInit(){
@@ -139,7 +142,6 @@ export class Tracking implements OnInit{
   printDirections(){
     if (this.directionsStatus === "OK"){
       this.markerOrigen.setMap(null);
-      this.markerDestino.setMap(null);
       this.directionsRender.setMap(this.map);
       this.directionsRender.setDirections(this.directionsResult);
     }
@@ -147,6 +149,32 @@ export class Tracking implements OnInit{
       alert("Cant retrieve routes");
     }
   };
+
+  updateServiceData(){
+    this.addresses.origen = this.activeService.origen;
+    this.addresses.destino = this.activeService.destino;
+    this.appShipmentService.getServiceById(this.activeService).subscribe(
+      (response)=>{
+        this.activeService = response[0];
+        this.updateServiceAddresses();
+        this.updateTransporterMarker();
+        console.log(this.activeService);
+        if (this.activeService.status === "ST"){
+          this.getDirections();
+        }
+        if (this.activeService.status === "FI"){
+          clearInterval(this.serviceTask);
+          this.goRateService();
+        }
+
+      }
+    );
+  }
+
+  updateServiceAddresses(){
+    this.activeService.origen = this.addresses.origen;
+    this.activeService.destino = this.addresses.destino;
+  }
 
   getTransporterPos(){
     this.appShipmentService.getTransporterById({id:this.activeService.transporter.id}).subscribe(

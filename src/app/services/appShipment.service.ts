@@ -60,7 +60,18 @@ export class AppShipmentService {
   getActiveService(data){
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions ({ headers: headers });
-    return this.http.post(this.url+"/services/activeService", data, options).map(
+    return this.http.post(this.url+"/services/activeService/user", data, options).map(
+      (response:Response) => {
+        const data = response.json();
+        return data;
+      }
+    );
+  }
+
+  getServiceById(data){
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions ({ headers: headers });
+    return this.http.post(this.url+"/services/servicebyId", data, options).map(
       (response:Response) => {
         const data = response.json();
         return data;
