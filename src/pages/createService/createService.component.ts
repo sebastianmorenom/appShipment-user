@@ -1,8 +1,9 @@
 import {Component} from "@angular/core";
-import { AlertController } from 'ionic-angular';
+import {AlertController, NavController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NavParams} from "ionic-angular";
 import {AppShipmentService} from "../../app/services/appShipment.service";
+import {Tracking} from "../tracking/tracking.component";
 
 @Component({
   templateUrl: 'createService.html'
@@ -18,7 +19,7 @@ export class CreateService {
   activeService:any;
 
   constructor(private formBuilder:FormBuilder, private navParams:NavParams, private alertCtrl: AlertController,
-              private appShipmentService:AppShipmentService){
+              private appShipmentService:AppShipmentService, private navCtrl: NavController){
     this.loading = false;
     this.submitAttempt = false;
     this.dimensiones = ['light', 'primary', 'light'];
@@ -64,11 +65,11 @@ export class CreateService {
             response => {
               this.loading=false;
               this.activeService = response;
-              this.presentAlertSuccessCreateService();
               this.appShipmentService.getTransporterById({id:response.idTransporter}).subscribe(
                 responseTrans => {
                   this.activeService.transporter = responseTrans;
                   console.log(this.activeService);
+                  this.presentAlertSuccessCreateService();
                 }
               );
             },
@@ -123,7 +124,15 @@ export class CreateService {
     let alert = this.alertCtrl.create({
       title: 'Perfecto!!',
       subTitle: 'Tu servicio se a creado correctamente.',
-      buttons: ['OK']
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.activeService.fecha_inicio = null;
+            this.navCtrl.setRoot(Tracking, {user:this.user, activeService:this.activeService});
+          }
+        }
+      ]
     });
     alert.present();
   }

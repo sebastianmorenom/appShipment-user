@@ -47,7 +47,7 @@ export class Tracking implements OnInit{
     console.log(this.activeService);
     this.serviceTask = setInterval(()=>{
       this.updateServiceData();
-    },10000);
+    },5000);
 
   }
 

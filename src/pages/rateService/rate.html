@@ -8,13 +8,15 @@
 
 <ion-content>
   <ion-row>
-    <ion-col>
+    <ion-col col-4 offset-4="">
     <ion-list>
       <ion-item-divider>
         <div class="centered">Como te parecio el servicio?</div>
       </ion-item-divider>
       <ion-item>
-        <p color="primary"> Califica a tu transportador y ayudanos a mejorar.</p>
+        <div class="centered">
+          <p color="primary"> Califica a tu transportador y ayudanos a mejorar.</p>
+        </div>
       </ion-item>
     </ion-list>
     </ion-col>
@@ -48,27 +50,29 @@
     <ion-col col-sm-6 offset-sm-3 col-md-4 offset-md-4>
       <ion-row>
         <ion-col>
-          <button ion-button clear>
+          <button ion-button [clear]="rate!==1" (click)="rateTrans(1)">
             <ion-icon name="star"></ion-icon>
           </button>
         </ion-col>
         <ion-col>
-          <button ion-button clear>
+          <button ion-button [clear]="rate!==2" (click)="rateTrans(2)">
             <ion-icon name="star"></ion-icon>
           </button>
         </ion-col>
         <ion-col>
-          <button ion-button clear>
+          <button ion-button [clear]="rate!==3" (click)="rateTrans(3)">
             <ion-icon name="star"></ion-icon>
           </button>
         </ion-col>
         <ion-col>
-          <button ion-button clear>
+          <button ion-button [clear]="rate!==4" (click)="rateTrans(4)">
             <ion-icon name="star"></ion-icon>
           </button></ion-col>
-        <ion-col><button ion-button clear>
-          <ion-icon name="star"></ion-icon>
-        </button></ion-col>
+        <ion-col>
+          <button ion-button [clear]="rate!==5" (click)="rateTrans(5)">
+            <ion-icon name="star"></ion-icon>
+          </button>
+        </ion-col>
       </ion-row>
     </ion-col>
   </ion-row>
