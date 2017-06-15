@@ -5,7 +5,7 @@ import 'rxjs/RX';
 @Injectable()
 export class AppShipmentService {
 
-  private url:String = "http://localhost:9000";
+  private url:String = "http://192.168.0.4:9000";
   //private url:String = "http://54.157.227.139:9000";
 
   constructor (private http:Http){}
